@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Time Page</title>
+</head>
+<body>
+<h2 th:text="@{Page opened at {time}(time=${time})}"></h2>
+<h2>Enter any year and check if it is a leap one:</h2>
+<form action="/leap" method="post">
+    Year: <input type="number" step="any" name="year"><br />
+    <button type="submit">Is leap?</button>
+</form>
+<h3 th:text="${reply}"></h3>
+</body>
+</html>
