@@ -2,6 +2,7 @@ package malgepav.dz6basic.controllers;
 
 import lombok.RequiredArgsConstructor;
 import malgepav.dz6basic.models.Note;
+import malgepav.dz6basic.services.FileGateWay;
 import malgepav.dz6basic.services.NoteService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,6 +16,8 @@ import java.util.List;
 public class NoteController {
     private final NoteService noteService;
 
+    private final FileGateWay fileGateWay;
+
     @GetMapping
     public ResponseEntity<List<Note>> getAllNotes() {
         return new ResponseEntity<>(noteService.getAll(), HttpStatus.OK);
@@ -22,6 +25,7 @@ public class NoteController {
 
     @PostMapping("/create")
     public ResponseEntity<Note> createNote(@RequestBody Note note) {
+        fileGateWay.writeToFile(note.getTitle() + ".txt", note.getContent());
         return new ResponseEntity<>(noteService.createNote(note), HttpStatus.CREATED);
     }
 
@@ -49,7 +53,7 @@ public class NoteController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteNote(@PathVariable("id") Long id){
+    public ResponseEntity<Void> deleteNote(@PathVariable("id") Long id) {
         noteService.deleteNoteById(id);
         return ResponseEntity.ok().build();
     }
